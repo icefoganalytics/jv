@@ -15,6 +15,7 @@ export type DepartmentWhereOptions = {
   email?: string
 }
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 export type DepartmentFiltersOptions = {}
 
 export const departmentsApi = {

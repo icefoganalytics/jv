@@ -80,9 +80,10 @@ export type RecoveryDocument = {
 }
 
 export type RecoveryWhereOptions = {
-  email?: string
+  department?: string
 }
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 export type RecoveryFiltersOptions = {}
 
 export const recoveriesApi = {

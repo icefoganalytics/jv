@@ -50,6 +50,7 @@ export type JournalWhereOptions = {
   email?: string
 }
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 export type JournalFiltersOptions = {}
 
 export const journalsApi = {
@@ -77,19 +78,23 @@ export const journalsApi = {
     const { data } = await http.get(`/api/journals/${journalId}`)
     return data
   },
-  async create(attributes: Partial<Journal>): Promise<{
+  async create(
+    attributes: Partial<Journal>,
+    recoveryIDs?: number[]
+  ): Promise<{
     journal: Journal
   }> {
-    const { data } = await http.post("/api/journals", attributes)
+    const { data } = await http.post("/api/journals", { ...attributes, recoveryIDs })
     return data
   },
   async update(
     journalId: number,
-    attributes: Partial<Journal>
+    attributes: Partial<Journal>,
+    recoveryIDs?: number[]
   ): Promise<{
     journal: Journal
   }> {
-    const { data } = await http.put(`/api/journals/${journalId}`, attributes)
+    const { data } = await http.put(`/api/journals/${journalId}`, { ...attributes, recoveryIDs })
     return data
   },
   async delete(journalId: number): Promise<void> {

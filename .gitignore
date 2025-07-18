@@ -109,3 +109,6 @@ db/sapassword.env
 
 # DB Data
 db/data
+
+# other
+notes.md
