@@ -80,9 +80,11 @@ export type RecoveryDocument = {
 }
 
 export type RecoveryWhereOptions = {
-  email?: string
+  journalID?: number
+  department?: string
 }
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 export type RecoveryFiltersOptions = {}
 
 export const recoveriesApi = {
@@ -128,23 +130,23 @@ export const recoveriesApi = {
     const { data } = await http.delete(`/api/recoveries/${recoveryId}`)
     return data
   },
-
   async upload(recoveryId: number, body: object): Promise<void> {
-    await http.post(`/api/recoveries/backup-documents/${recoveryId}`, body, {
+    await http.post(`/api/recoveries/${recoveryId}/backup-documents`, body, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
     })
   },
-
-  async deleteUpload(recoveryId: number, docId: number): Promise<void> {
-    await http.delete(`/api/recoveries/${recoveryId}/backup-documents/${docId}`)
+  async deleteUpload(recoveryId: number, documentId: number): Promise<void> {
+    await http.delete(`/api/recoveries/${recoveryId}/backup-documents/${documentId}`)
   },
-
-  async getUpload(recoveryId: number, docId: number): Promise<ArrayBuffer | null> {
-    const { data } = await http.get(`/api/recoveries/backup-documents/${recoveryId}/${docId}`, {
-      responseType: "arraybuffer",
-    })
+  async getUpload(recoveryId: number, documentId: number): Promise<ArrayBuffer | null> {
+    const { data } = await http.get(
+      `/api/recoveries/${recoveryId}/backup-documents/${documentId}`,
+      {
+        responseType: "arraybuffer",
+      }
+    )
     return data
   },
 }

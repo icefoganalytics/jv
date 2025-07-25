@@ -1,8 +1,13 @@
 import http from "@/api/http-client"
-import { type Policy } from "@/api/base-api"
-import { Recovery } from "./recoveries-api"
+
+import { FiltersOptions, WhereOptions, type Policy } from "@/api/base-api"
+import { Recovery } from "@/api/recoveries-api"
 
 /** Keep in sync with api/src/models/journal.ts */
+export enum JournalStatuses {
+  DRAFT = "Draft",
+  COMPLETE = "Complete",
+}
 
 export type JournalAudit = {
   auditID: number
@@ -19,7 +24,7 @@ export type Journal = {
   department: string
   period: number
   jvAmount: number
-  status: string
+  status: JournalStatuses
   jvDate: string
   fiscalYear: string
   description: string
@@ -46,29 +51,31 @@ export type JournalDocument = {
   document?: { data: number[] }
 }
 
-export type JournalWhereOptions = {
-  email?: string
+export type JournalWhereOptions = WhereOptions<Journal, "journalID">
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+export type JournalFiltersOptions = FiltersOptions<{
+  search: string
+  searchStatus: string | string[]
+  searchDepartment: string | string[]
+}>
+
+export type JournalQueryOptions = {
+  where?: JournalWhereOptions
+  filters?: JournalFiltersOptions
+  page?: number
+  perPage?: number
 }
 
-export type JournalFiltersOptions = {}
-
 export const journalsApi = {
-  async list(
-    params: {
-      where?: JournalWhereOptions
-      filters?: JournalFiltersOptions
-      page?: number
-      perPage?: number
-    } = {}
-  ): Promise<{
+  async list(params: JournalQueryOptions = {}): Promise<{
     journals: Journal[]
     totalCount: number
   }> {
     const { data } = await http.get("/api/journals", {
       params,
     })
-
-    return { journals: data.journals, totalCount: data.totalCount }
+    return data
   },
   async get(journalId: number): Promise<{
     journal: Journal
@@ -77,19 +84,23 @@ export const journalsApi = {
     const { data } = await http.get(`/api/journals/${journalId}`)
     return data
   },
-  async create(attributes: Partial<Journal>): Promise<{
+  async create(
+    attributes: Partial<Journal>,
+    recoveryIDs?: number[]
+  ): Promise<{
     journal: Journal
   }> {
-    const { data } = await http.post("/api/journals", attributes)
+    const { data } = await http.post("/api/journals", { ...attributes, recoveryIDs })
     return data
   },
   async update(
     journalId: number,
-    attributes: Partial<Journal>
+    attributes: Partial<Journal>,
+    recoveryIDs?: number[]
   ): Promise<{
     journal: Journal
   }> {
-    const { data } = await http.put(`/api/journals/${journalId}`, attributes)
+    const { data } = await http.put(`/api/journals/${journalId}`, { ...attributes, recoveryIDs })
     return data
   },
   async delete(journalId: number): Promise<void> {

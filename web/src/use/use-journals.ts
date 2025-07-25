@@ -3,18 +3,19 @@ import { type Ref, reactive, toRefs, ref, unref, watch } from "vue"
 import journalsApi, {
   type Journal,
   type JournalWhereOptions,
+  type JournalQueryOptions,
   type JournalFiltersOptions,
 } from "@/api/journals-api"
 
-export { type Journal, type JournalWhereOptions, type JournalFiltersOptions }
+export {
+  type Journal,
+  type JournalWhereOptions,
+  type JournalQueryOptions,
+  type JournalFiltersOptions,
+}
 
 export function useJournals(
-  queryOptions: Ref<{
-    where?: JournalWhereOptions
-    filters?: JournalFiltersOptions
-    page?: number
-    perPage?: number
-  }> = ref({}),
+  queryOptions: Ref<JournalQueryOptions> = ref({}),
   { skipWatchIf = () => false }: { skipWatchIf?: () => boolean } = {}
 ) {
   const state = reactive<{

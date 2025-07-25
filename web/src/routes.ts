@@ -69,8 +69,9 @@ const routes: RouteRecordRaw[] = [
       },
       {
         name: "JournalPage",
-        path: ":id",
+        path: ":journalId",
         component: () => import("@/pages/journals/JournalPage.vue"),
+        props: true,
       },
     ],
   },

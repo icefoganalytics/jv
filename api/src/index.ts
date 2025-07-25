@@ -8,16 +8,15 @@ import { FRONTEND_URL, AUTH0_DOMAIN, API_PORT } from "@/config"
 import { doHealthCheck } from "@/utils/healthCheck"
 import { CreateMigrationRoutes } from "@/data"
 import {
-  recoveriesRouter,
-  lookupRouter,
-  userRouter,
-  dataRouter,
   adminRouter,
-  pdfRouter,
-  migrationRouter,
+  dataRouter,
   journalsRouter,
+  lookupRouter,
+  migrationRouter,
+  pdfRouter,
+  recoveriesRouter,
+  userRouter,
 } from "@/routes"
-import { emailCronjob } from "@/services/emailcronjob"
 import jwtMiddleware from "@/middleware/jwt-middleware"
 import { ensureAndAuthorizeCurrentUser } from "@/middleware/authorization-middleware"
 

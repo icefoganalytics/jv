@@ -3,7 +3,7 @@
     label="Department"
     :items="departments"
     item-title="name"
-    item-value="id"
+    item-value="name"
   />
 </template>
 
